@@ -1,10 +1,7 @@
-import * as express from 'express';
-import * as cors from 'cors';
 import { env } from 'process';
-import { short as gitRevShort } from 'git-rev-sync';
-import { requests as requestsLogger } from './logger';
-import * as api from './api/api';
+import * as express from 'express';
 import * as log from 'solid-log';
+import * as cors from 'cors';
 
 const app = express();
 
@@ -20,6 +17,10 @@ if (env.NODE_ENV === 'dev') {
     origin: 'https://app.shoplistic.com'
   }));
 }
+
+import { short as gitRevShort } from 'git-rev-sync';
+import { requests as requestsLogger } from './logger';
+import * as api from './api/api';
 
 app.listen(env.NODE_PORT, () => {
   log.info(`Server started on port ${env.NODE_PORT}`);

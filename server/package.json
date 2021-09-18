@@ -6,11 +6,11 @@
   "scripts": {
     "prestart": "npm install && npm run ts:compile",
     "start": "node out/index",
-    "ts:compile": "tsc -p ./src/tsconfig.server.json",
-    "ts:watch": "tsc -p ./src/tsconfig.server.json --watch",
+    "ts:compile": "node_modules/.bin/tsc -p ./src/tsconfig.server.json",
+    "ts:watch": "node_modules/.bin/tsc -p ./src/tsconfig.server.json --watch",
     "dev": "npm rebuild --build-from-source && node devserver",
     "test": "mocha out-test",
-    "test:compile": "tsc -p ./test/tsconfig.test.json",
+    "test:compile": "node_modules/.bin/tsc -p ./test/tsconfig.test.json",
     "clean": "rm -rf out"
   },
   "author": "olback",
@@ -43,7 +43,6 @@
     "morgan": "^1.9.1",
     "node-fetch": "^2.3.0",
     "pg": "^7.5.0",
-    "pg-native": "^3.0.0",
     "solid-log": "^1.0.2",
     "swagger-ui-express": "^4.0.1",
     "typescript": "^3.1.1",
