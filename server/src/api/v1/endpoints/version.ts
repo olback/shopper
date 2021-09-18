@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import * as git from 'git-rev-sync';
 
 const router = Router();
 
@@ -7,12 +6,12 @@ router.get('/', async (_req, res) => {
 
   const frontend = {
     version: '<unknown>',
-    updated: '<unknown>'
+    updated: 0
   }
 
   const backend = {
-    version: git.short(),
-    updated: git.date().getTime()
+    version: '__BACKEND_COMMIT_HASH__',
+    updated: new Date('__BACKEND_COMMIT_DATE__').getTime()
   }
 
   res.status(200).json({

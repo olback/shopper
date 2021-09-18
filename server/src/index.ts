@@ -18,7 +18,6 @@ if (env.NODE_ENV === 'dev') {
   }));
 }
 
-import { short as gitRevShort } from 'git-rev-sync';
 import { requests as requestsLogger } from './logger';
 import * as api from './api/api';
 
@@ -38,7 +37,7 @@ app.use('/v1', api.v1);
 // Version
 app.get('/version', async (_req, res) => {
   res.status(200).json({
-    version: gitRevShort()
+    version: '__BACKEND_COMMIT_HASH__'
   });
 });
 

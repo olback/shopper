@@ -4,20 +4,24 @@ import { pgConf } from '../config';
 import { bearerGuard } from '../guards/bearer';
 import { adminGuard } from '../guards/admin';
 import fetch from 'node-fetch';
+import * as log from 'solid-log';
 
 const router = Router();
 
 router.use(bodyParser());
 
-router.get('/search', bearerGuard, (req, res) => {
+router.get('/search', bearerGuard, async (req, res) => {
 
   const query = req.query['q'] || '';
 
   const db = new Client(pgConf);
   db.connect();
-  db.query('SELECT * FROM products WHERE display_name ILIKE \'%\' || $1 || \'%\' LIMIT 10', [query], (error, result) => {
+
+  db.query("SELECT * FROM products WHERE display_name ILIKE '%' || $1 || '%' LIMIT 10", [query], (error, result) => {
 
     if (error) {
+
+      log.error(error);
 
       res.status(500).json({
         message: 'Internal Server Error'
@@ -66,25 +70,25 @@ router.get('/:barcode', bearerGuard, (req, res) => {
         const url = `https://handla.api.ica.se/api/upclookup?upc=${req.params.barcode}`;
 
         fetch(url)
-        .then(r => r.json())
-        .then(r => {
-          if (r['Items'].length) {
-            res.status(200).json({
-              barcode: req.params.barcode,
-              display_name: r['Items'][0]['ItemDescription'],
-              manufacturer: ''
-            });
-          } else {
+          .then(r => r.json())
+          .then(r => {
+            if (r['Items'].length) {
+              res.status(200).json({
+                barcode: req.params.barcode,
+                display_name: r['Items'][0]['ItemDescription'],
+                manufacturer: ''
+              });
+            } else {
+              res.status(404).json({
+                message: 'Not Found'
+              });
+            }
+          })
+          .catch(() => {
             res.status(404).json({
               message: 'Not Found'
             });
-          }
-        })
-        .catch(() => {
-          res.status(404).json({
-            message: 'Not Found'
           });
-        });
 
       } else {
 

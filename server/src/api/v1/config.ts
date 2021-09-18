@@ -10,7 +10,7 @@ const pgConf: ClientConfig = {
   database: env.PG_USER,
   ssl: env.PG_SSL_ALWAYS_TRUST ? {
     rejectUnauthorized: false
-  } : false
+  } : undefined
 }
 
 const mongoConf = `mongodb://${env.MONGO_USER}:${env.MONGO_PASSWORD}@${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_USER}`;
